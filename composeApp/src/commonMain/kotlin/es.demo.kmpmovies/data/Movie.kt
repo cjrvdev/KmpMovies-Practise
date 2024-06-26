@@ -1,4 +1,4 @@
-package es.demo.kmpmovies
+package es.demo.kmpmovies.data
 
 data class Movie(val id: Int, val title: String, val poster: String)
 

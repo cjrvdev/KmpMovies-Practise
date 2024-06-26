@@ -1,16 +1,18 @@
-package es.demo.kmpmovies.ui.screens.home
+package es.demo.kmpmovies.ui.screens.detail
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import es.demo.kmpmovies.Movie
-import es.demo.kmpmovies.movies
-import kotlinx.coroutines.delay
+import es.demo.kmpmovies.data.Movie
+import es.demo.kmpmovies.data.MoviesRepository
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class DetailViewModel(
+    private val id: Int,
+    private val moviesRepository: MoviesRepository
+) : ViewModel() {
 
     var state by mutableStateOf(UiState())
         private set
@@ -18,14 +20,15 @@ class HomeViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             state = UiState(loading = true)
-            delay(2000)
-            state = UiState(loading = false, movies)
+            state = UiState(
+                loading = false,
+                movie = moviesRepository.fetchMovieById(id)
+            )
         }
     }
 
-
     data class UiState(
         val loading: Boolean = false,
-        val movies: List<Movie> = emptyList()
+        val movie: Movie? = null
     )
 }
