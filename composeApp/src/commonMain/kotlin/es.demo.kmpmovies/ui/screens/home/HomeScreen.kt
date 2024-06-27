@@ -87,7 +87,7 @@ fun MovieItem(movie: Movie, onClicked: () -> Unit) {
         Text(
             text = movie.title,
             style = typography.bodySmall,
-            maxLines = 1,
+//            maxLines = 2,
             modifier = Modifier.padding(8.dp)
         )
     }

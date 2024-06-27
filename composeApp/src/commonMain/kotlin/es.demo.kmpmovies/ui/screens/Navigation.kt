@@ -10,7 +10,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import es.demo.kmpmovies.data.MoviesRepository
 import es.demo.kmpmovies.data.MoviesService
-import es.demo.kmpmovies.data.movies
 import es.demo.kmpmovies.ui.screens.detail.DetailScreen
 import es.demo.kmpmovies.ui.screens.detail.DetailViewModel
 import es.demo.kmpmovies.ui.screens.home.HomeScreen
