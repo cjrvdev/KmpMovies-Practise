@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import es.demo.kmpmovies.data.MoviesRepository
 import es.demo.kmpmovies.data.MoviesService
+import es.demo.kmpmovies.data.database.MoviesDao
 import es.demo.kmpmovies.ui.screens.detail.DetailScreen
 import es.demo.kmpmovies.ui.screens.detail.DetailViewModel
 import es.demo.kmpmovies.ui.screens.home.HomeScreen
@@ -25,9 +26,9 @@ import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun Navigation() {
+fun Navigation(moviesDao: MoviesDao) {
     val navController = rememberNavController()
-    val moviesRepository = rememberMoviesRepository()
+    val moviesRepository = rememberMoviesRepository(moviesDao)
 
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
@@ -42,14 +43,17 @@ fun Navigation() {
         ) { backstackEntry ->
             val movieId = checkNotNull(backstackEntry.arguments?.getInt("movieId"))
             DetailScreen(
-                vm = viewModel{DetailViewModel(movieId, moviesRepository)},
+                vm = viewModel { DetailViewModel(movieId, moviesRepository) },
                 onBack = { navController.popBackStack() })
         }
     }
 }
 
 @Composable
-private fun rememberMoviesRepository(apiKey: String = stringResource(Res.string.api_key)): MoviesRepository =
+private fun rememberMoviesRepository(
+    moviesDao: MoviesDao,
+    apiKey: String = stringResource(Res.string.api_key)
+): MoviesRepository =
     remember {
         val client = HttpClient {
             install(ContentNegotiation) {
@@ -66,5 +70,5 @@ private fun rememberMoviesRepository(apiKey: String = stringResource(Res.string.
             }
         }
 
-        MoviesRepository(MoviesService(client))
+        MoviesRepository(MoviesService(client), moviesDao)
     }

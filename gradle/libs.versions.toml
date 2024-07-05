@@ -13,13 +13,13 @@ androidx-test-junit = "1.2.0"
 compose-plugin = "1.6.10"
 junit = "4.13.2"
 kotlin = "2.0.0"
-ktor = "2.3.11"
-coil = "3.0.0-alpha06"
+ktor = "2.3.12"
+coil = "3.0.0-alpha07"
 navigation-compose="2.8.0-alpha02"
 androidx-lifecycle = "2.8.0"
 ksp = "2.0.0-1.0.21"
-androidx-room = "2.7.0-alpha03"
-androidx-sqliteBundled = "2.5.0-alpha03"
+androidx-room = "2.7.0-alpha04"
+androidx-sqliteBundled = "2.5.0-alpha04"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

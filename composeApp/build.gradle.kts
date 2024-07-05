@@ -104,12 +104,12 @@ android {
     }
 }
 
-dependencies{
+dependencies {
     add("kspCommonMainMetadata", libs.androidx.room.compiler)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
-    if (name != "kspCommonKotlinMetadata"){
+    if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
     }
 }
