@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import es.demo.kmpmovies.BuildConfig
 import es.demo.kmpmovies.data.MoviesRepository
 import es.demo.kmpmovies.data.MoviesService
 import es.demo.kmpmovies.data.database.MoviesDao
@@ -51,8 +52,7 @@ fun Navigation(moviesDao: MoviesDao) {
 
 @Composable
 private fun rememberMoviesRepository(
-    moviesDao: MoviesDao,
-    apiKey: String = stringResource(Res.string.api_key)
+    moviesDao: MoviesDao
 ): MoviesRepository =
     remember {
         val client = HttpClient {
@@ -65,7 +65,7 @@ private fun rememberMoviesRepository(
                 url {
                     protocol = URLProtocol.HTTPS
                     host = "api.themoviedb.org"
-                    parameters.append("api_key", apiKey)
+                    parameters.append("api_key", BuildConfig.API_KEY)
                 }
             }
         }

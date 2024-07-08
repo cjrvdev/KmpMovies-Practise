@@ -1,4 +1,4 @@
-package data.database
+package es.demo.kmpmovies.database
 
 import androidx.room.Room
 import androidx.room.RoomDatabase

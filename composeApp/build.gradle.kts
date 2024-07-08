@@ -1,6 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -10,6 +11,7 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidxRoom)
+    alias(libs.plugins.gradleBuildConfig)
 }
 
 kotlin {
@@ -19,7 +21,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -30,13 +32,14 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -54,13 +57,17 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel.compose)
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
     }
 
-    sourceSets.commonMain{
+    sourceSets.commonMain {
         kotlin.srcDirs("build/generated/ksp/metadata")
     }
 
@@ -114,6 +121,17 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach
     }
 }
 
-room{
+room {
     schemaDirectory("$projectDir/schemas")
+}
+
+buildConfig {
+    packageName("es.demo.kmpmovies")
+
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").reader())
+
+    val apiKey = properties.getProperty("API_KEY")
+
+    buildConfigField("API_KEY", apiKey)
 }
