@@ -12,8 +12,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +43,7 @@ import es.demo.kmpmovies.ui.common.LoadingIndicator
 import es.demo.kmpmovies.ui.screens.Screen
 import kmpmovies.composeapp.generated.resources.Res
 import kmpmovies.composeapp.generated.resources.back
+import kmpmovies.composeapp.generated.resources.favorite
 import kmpmovies.composeapp.generated.resources.original_language
 import kmpmovies.composeapp.generated.resources.original_title
 import kmpmovies.composeapp.generated.resources.popularity
@@ -54,13 +58,24 @@ fun DetailScreen(vm: DetailViewModel, onBack: () -> Unit) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Screen {
-        Scaffold(topBar = {
-            DetailTopAppBar(
-                title = state.movie?.title ?: "",
-                scrollBehavior = scrollBehavior,
-                onBack = onBack
-            )
-        }
+        Scaffold(
+            topBar = {
+                DetailTopAppBar(
+                    title = state.movie?.title ?: "",
+                    scrollBehavior = scrollBehavior,
+                    onBack = onBack
+                )
+            },
+            floatingActionButton = {
+                state.movie?.let { movie ->
+                    FloatingActionButton(onClick = vm::onFavoriteClick) {
+                        Icon(
+                            imageVector = if (movie.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = stringResource(Res.string.favorite)
+                        )
+                    }
+                }
+            }
         ) { padding ->
             LoadingIndicator(
                 enabled = vm.state.loading,
@@ -126,7 +141,11 @@ private fun MovieDetail(
                 property(stringResource(Res.string.original_title), movie.originalTitle)
                 property(stringResource(Res.string.release_date), movie.releaseDate)
                 property(stringResource(Res.string.popularity), movie.popularity.toString())
-                property(stringResource(Res.string.vote_average), movie.voteAverage.toString(), lastLine = true)
+                property(
+                    stringResource(Res.string.vote_average),
+                    movie.voteAverage.toString(),
+                    lastLine = true
+                )
             }, modifier = Modifier.fillMaxWidth()
                 .background(color = MaterialTheme.colorScheme.secondaryContainer)
                 .padding(16.dp)

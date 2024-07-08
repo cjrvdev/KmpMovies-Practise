@@ -13,8 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
@@ -35,13 +39,16 @@ import es.demo.kmpmovies.ui.common.LoadingIndicator
 import es.demo.kmpmovies.ui.screens.Screen
 import kmpmovies.composeapp.generated.resources.Res
 import kmpmovies.composeapp.generated.resources.app_name
+import kmpmovies.composeapp.generated.resources.favorite
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, KoinExperimentalAPI::class)
 @Composable
 fun HomeScreen(
     onMovieClicked: (Movie) -> Unit,
-    vm: HomeViewModel
+    vm: HomeViewModel = koinViewModel()
 ) {
     Screen {
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -74,16 +81,30 @@ fun HomeScreen(
 @Composable
 fun MovieItem(movie: Movie, onClicked: () -> Unit) {
     Column(modifier = Modifier.clickable(onClick = onClicked)) {
-        AsyncImage(
-            model = movie.poster,
-            contentDescription = movie.title,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(2 / 3f)
-                .clip(shapes.small)
-                .background(colorScheme.primaryContainer)
-        )
+        Box {
+
+            AsyncImage(
+                model = movie.poster,
+                contentDescription = movie.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(2 / 3f)
+                    .clip(shapes.small)
+                    .background(colorScheme.primaryContainer)
+            )
+
+            if (movie.isFavorite) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = stringResource(
+                        Res.string.favorite
+                    ),
+                    tint = MaterialTheme.colorScheme.inverseOnSurface,
+                    modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)
+                )
+            }
+        }
         Text(
             text = movie.title,
             style = typography.bodySmall,

@@ -19,8 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             EnableTransparentStatusBar()
-            val db = getDatabaseBuilder(this).build()
-            App(db.moviesDao())
+            App()
         }
     }
 

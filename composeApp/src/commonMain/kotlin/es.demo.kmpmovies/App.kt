@@ -9,15 +9,18 @@ import coil3.util.DebugLogger
 import es.demo.kmpmovies.data.database.MoviesDao
 import es.demo.kmpmovies.ui.screens.Navigation
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.KoinContext
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 @Preview
-fun App(moviesDao : MoviesDao) {
+fun App() {
     setSingletonImageLoaderFactory { context ->
         ImageLoader.Builder(context).crossfade(true).logger(DebugLogger()).build()
     }
-    Navigation(moviesDao)
+    KoinContext {
+        Navigation()
+    }
 }
 
 

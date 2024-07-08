@@ -8,6 +8,5 @@ fun MainViewController() = ComposeUIViewController(
         initKoin()
     }
 ) {
-    val db = getDatabaseBuilder().build()
-    App(db.moviesDao())
+    App()
 }
