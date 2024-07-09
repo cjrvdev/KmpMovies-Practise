@@ -40,6 +40,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.android)
+            implementation(libs.play.services.location)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -136,3 +137,9 @@ buildConfig {
 
     buildConfigField("API_KEY", apiKey)
 }
+//
+//skie {
+//    features {
+//        enableSwiftUIObservingPreview = true
+//    }
+//}
