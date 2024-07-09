@@ -34,8 +34,11 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.PermissionsController
 import es.demo.kmpmovies.data.Movie
 import es.demo.kmpmovies.ui.common.LoadingIndicator
+import es.demo.kmpmovies.ui.common.PermissionRequestEffect
 import es.demo.kmpmovies.ui.screens.Screen
 import kmpmovies.composeapp.generated.resources.Res
 import kmpmovies.composeapp.generated.resources.app_name
@@ -50,6 +53,10 @@ fun HomeScreen(
     onMovieClicked: (Movie) -> Unit,
     vm: HomeViewModel = koinViewModel()
 ) {
+    PermissionRequestEffect(Permission.COARSE_LOCATION) {
+        vm.onUiReady()
+    }
+
     Screen {
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
         Scaffold(
@@ -82,7 +89,6 @@ fun HomeScreen(
 fun MovieItem(movie: Movie, onClicked: () -> Unit) {
     Column(modifier = Modifier.clickable(onClick = onClicked)) {
         Box {
-
             AsyncImage(
                 model = movie.poster,
                 contentDescription = movie.title,

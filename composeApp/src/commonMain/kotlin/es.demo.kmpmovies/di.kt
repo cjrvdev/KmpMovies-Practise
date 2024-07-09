@@ -2,10 +2,10 @@ package es.demo.kmpmovies
 
 import androidx.room.RoomDatabase
 import es.demo.kmpmovies.data.MoviesRepository
-import es.demo.kmpmovies.data.MoviesService
+import es.demo.kmpmovies.data.RegionRepository
+import es.demo.kmpmovies.data.remote.MoviesService
 import es.demo.kmpmovies.data.database.MoviesDao
 import es.demo.kmpmovies.data.database.MoviesDatabase
-import es.demo.kmpmovies.ui.screens.detail.DetailScreen
 import es.demo.kmpmovies.ui.screens.detail.DetailViewModel
 import es.demo.kmpmovies.ui.screens.home.HomeViewModel
 import io.ktor.client.HttpClient
@@ -32,6 +32,7 @@ val appModule = module {
 
 val dataModule = module {
     factoryOf(::MoviesRepository)
+    factoryOf(::RegionRepository)
     factoryOf(::MoviesService)
     single<HttpClient> {
         HttpClient {

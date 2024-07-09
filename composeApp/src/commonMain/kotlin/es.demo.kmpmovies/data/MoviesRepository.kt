@@ -1,17 +1,21 @@
 package es.demo.kmpmovies.data
 
 import es.demo.kmpmovies.data.database.MoviesDao
+import es.demo.kmpmovies.data.remote.MoviesService
+import es.demo.kmpmovies.data.remote.RemoteMovie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 
 class MoviesRepository(
     private val moviesService: MoviesService,
-    private val moviesDao: MoviesDao
+    private val moviesDao: MoviesDao,
+    private val regionRepository: RegionRepository
 ) {
     val movies: Flow<List<Movie>> = moviesDao.fetchPopularMovies().onEach { movies ->
         if (movies.isEmpty()) {
             val popularMovies =
-                moviesService.fetchPopularMovies().results.map { it.toDomainMovie() }
+                moviesService.fetchPopularMovies(regionRepository.fetchRegion())
+                    .results.map { it.toDomainMovie() }
             moviesDao.save(popularMovies)
         }
     }
